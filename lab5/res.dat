@@ -1,0 +1,74 @@
+XMD (Version 2.5.32 Oct 25 2002)
+
+Not using pthread library.
+Not using asm("finit"); patch in thread routines.
+# MD run to calculate thermal expansion
+
+#  Switch on EAM Al potential
+read nial.txt
+
+#  Set up some useful constants for this potential
+
+calc  Ni=1
+calc  Al=2
+calc  MassNi=58.6943
+calc  MassAl=26.982
+eunit eV
+
+#  Make box bigger to satisfy minimum image criterion
+box 1 1 1
+
+read structures2/s-28-04.sqs 
+#dup  2  1 0 0
+#dup  2  0 1 0
+#dup  2  0 0 1
+#write XMOL initial.xyz
+scale A0 B0 C0
+
+# sc can be used to scale to different volume (pressure)
+bsave 10 boxlengths.dat
+esave 10 energy.dat
+
+# Give the particles masses
+select type Ni
+***  NUMBER SELECTED 108
+mass MassNi
+select type Al
+***  NUMBER SELECTED 756
+mass MassAl
+
+# MATLAB supplies temperature, bulk modulus, time step, md steps
+dtime 3.500e-15 
+itemp   2400.0 
+clamp   1200.0 
+pressure clamp      0.9 
+pressure external     0.060 
+cmd   5000 
+***   Current step is 5000
+
+# scale sc
+  write energy
+EPOT -3.480365246e+000
+  write box
+BOX    23.63267179    23.98728978    23.80765285
+  write nat
+nat 864
+# write Vol
+# Stress in ergs. Conv to ev: multiply with 6.241e11
+  write stress
+STRESS 9.492e-013 9.172e-013 9.441e-013 -1.266e-014 2.643e-014 -2.853e-014
+
+TIME INFORMATION
+   Ending   Time: 09/30/2021   15:34:59
+   Elapsed  Time: 0 min 35 sec
+
+DYNAMICS STATISTICS
+   Number of MD Steps:                5000
+   Number of Neighbor Searchs:        2499
+   Time spent on MD steps:              35 (secs)
+   Time spent on Neighbor Search:       14 (secs)
+
+ERROR STATISTICS
+   Number of Fatal Errors:               0
+   Number of Unknown Command Errors:     0
+   Number of Misc. Warnings:             0

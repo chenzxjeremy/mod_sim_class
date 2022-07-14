@@ -1,0 +1,12 @@
+# Lattice constants
+calc  A0=2.86378246
+calc  B0=2.86378246
+calc  C0=4.05
+
+# Number of atoms 
+calc nat = 2
+
+# Atom list
+particle  nat
+ Al  0.000 0.000 0.000
+ Al  0.500 0.500 0.500
